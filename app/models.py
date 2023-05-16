@@ -51,14 +51,16 @@ class User(UserMixin, db.Model):  # UserMixin is a generic implementation of nec
         if self.is_following(user):
             self.followed.remove(user)
 
-    def followed_posts(self):
+    def followed_posts(self): #  returns posts from followed users + own posts as well
         followed_users_posts = Post.query.join(
             followers, (followers.c.followed_id == Post.user_id)).filter(
             followers.c.follower_id == self.id)
-        own_posts = Post.query.filter_by(id=self.id)
+        own_posts = Post.query.filter_by(user_id=self.id)
 
         return followed_users_posts.union(own_posts).order_by(Post.timestamp.desc())
 
+    def own_posts(self):
+        return Post.query.filter_by(user_id=self.id)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
