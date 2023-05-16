@@ -20,4 +20,15 @@
     {% for post in posts %}
         {% include '_post.html' %}
     {% endfor %}
+
+    {% if prev_page %}
+        <a href="{{ prev_page }}">Newer Posts</a>
+    {% else %}
+        <span>Newer Posts</span>
+    {% endif %}
+    {% if next_page %}
+        <a href="{{ next_page }}">Older Posts</a>
+    {% else %}
+        <span>Older Posts</span>
+    {% endif %}
 {% endblock %}
